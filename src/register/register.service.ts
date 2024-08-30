@@ -31,7 +31,7 @@ export class RegisterService {
   }) => {
     const { isValid } = await this.checkDomain({ domain });
     if (!isValid) {
-      return;
+      return null;
     }
 
     // TODO put the value
@@ -43,5 +43,35 @@ export class RegisterService {
 
     const docResponse = await doc.save();
     return docResponse;
+  };
+
+  addChain = async ({
+    domain,
+    chainId,
+  }: {
+    domain: string;
+    chainId: number;
+  }) => {
+    const { isValid } = await this.checkDomain({ domain });
+    if (!isValid) {
+      return null;
+    }
+
+    const updateResponse = await this.register.findOneAndUpdate(
+      { domain },
+      { $push: { registeredChainId: chainId } },
+    );
+
+    return updateResponse;
+  };
+
+  getregisteredChainIdForDomain = async ({ domain }: { domain: string }) => {
+    const response = await this.register.findOne({ domain });
+
+    if (response) {
+      return response.registeredChainId;
+    }
+
+    return null;
   };
 }
