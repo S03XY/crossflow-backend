@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { CheckDomainDto } from './dto/checkDomain';
 import { RegisterService } from './register.service';
 
-@Controller('api/regiter')
+@Controller()
 export class RegisterController {
   constructor(private readonly registerService: RegisterService) {}
 
